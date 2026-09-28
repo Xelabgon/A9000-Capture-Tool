@@ -1,6 +1,12 @@
+<p align="left">
+  <img src="icon.png" alt="A9000 Capture Tool icon" width="96" height="96">
+</p>
+
 # A9000 Capture Tool
 
 Current version: **0.3.3**.
+
+**Recommended: download the Windows `.exe` from this repository’s Releases section.** No Python installation or source-code setup is needed to use the executable.
 
 A Windows desktop app for surveying nearby Wi-Fi radios, visualizing their advertised channel overlap, and saving **passive 802.11 captures** as Wireshark-readable PCAP files. The raw capture backend is built for the **NETGEAR A9000** (`USB\VID_0846&PID_9072`, MediaTek MT7925AU) with a WinUSB binding.
 
@@ -18,9 +24,8 @@ The A9000 survey updates the list as APs are found during each sweep. Automatic 
 
 ## Requirements
 
-- Windows and Python **3.11 or newer**.
+- Windows.
 - A NETGEAR A9000 bound to **WinUSB** for passive surveys and raw capture.
-- Dependencies from `requirements.txt`: PySide6, PyUSB, and `libusb-package`.
 - Wireshark to inspect the resulting `.pcap` files (optional for running the app).
 
 An Intel AX200 or other Windows Wi-Fi adapter can be selected as a **Windows WLAN discovery source** for the network and overlap views. Raw 802.11 capture in this release requires the A9000. This is a user-space USB application using WinUSB, not an installable replacement kernel Wi-Fi driver. Binding the A9000 to WinUSB means Windows will no longer use that adapter for ordinary Wi-Fi connections until its normal driver is restored.
@@ -33,7 +38,22 @@ To restore ordinary Wi-Fi later, use Windows Device Manager to update the A9000'
 
 ## Install and run
 
-From PowerShell in this repository's folder:
+### Windows executable (recommended)
+
+1. Open this repository’s **Releases** section (in the right-hand sidebar on GitHub) and select the latest release.
+2. Under **Assets**, download **`A9000 Capture Tool.exe`**. The automatically generated **Source code (zip)** and **Source code (tar.gz)** downloads are for running or developing the Python source.
+3. Save the executable wherever you want to keep it, then double-click it. No installer is required, and it does not need to remain in a folder named `dist`.
+4. For A9000 capture, complete the **A9000 driver binding** setup above if you have not already done so. The executable does not install or change the USB driver.
+
+The executable is packaged with **PyInstaller** and includes the Python runtime, application dependencies, USB library, and firmware assets. You do not need to download the source code or install Python to run it. WinUSB remains a separate device-driver requirement.
+
+Output files default to your **Downloads** folder. Use **File → Select output folder** to choose another location; the app remembers your choice.
+
+### Run from source (development or customization)
+
+Use this option if you want to inspect or modify the application, or run it directly with Python. Install **Python 3.11 or newer**, then download and extract the source code or clone the repository.
+
+From PowerShell in the project folder:
 
 ```powershell
 py -3 -m venv .venv
@@ -94,6 +114,27 @@ The first shows management frames and EAPOL. Replace the address in the second w
 | PCAP misses the connection | Start capture before the device connects and select the AP's actual primary channel. Try **All frames** with AP and client filters off; check whether the phone uses a private MAC. |
 | Capture button is disabled | Wait for the A9000 status to report ready. A Windows WLAN adapter can survey but cannot run this raw capture backend. |
 | Output file already exists | Choose a new `.pcap` filename; existing recordings are never overwritten. |
+
+## Build a Windows executable
+
+Build on Windows using the same virtual environment that contains the application dependencies. After the source setup above, run:
+
+```powershell
+.\.venv\Scripts\python.exe -m pip install --upgrade pyinstaller
+
+.\.venv\Scripts\python.exe -m PyInstaller --noconfirm --clean --onefile --windowed `
+  --name "A9000 Capture Tool" `
+  --paths "vendor" `
+  --collect-submodules wifit3 `
+  --collect-all libusb_package `
+  --hidden-import usb.backend.libusb1 `
+  --add-data "vendor/wifit3/chips/mt7925au/assets:vendor/wifit3/chips/mt7925au/assets" `
+  app.py
+```
+
+The result is `dist/A9000 Capture Tool.exe`. To set the executable icon, add `--icon "icon.ico"` before `app.py` when an ICO file is available. The `icon.png` file is used for this README’s image.
+
+Before publishing a build, test it outside the source folder: launch it, detect the A9000 after reconnecting it, record a PCAP, export JSON/CSV, and check that the output-folder preference survives a restart. If startup fails without a useful message, rebuild without `--windowed` and launch the executable from PowerShell to see console errors.
 
 ## Project files
 
