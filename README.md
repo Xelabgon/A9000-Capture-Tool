@@ -28,7 +28,7 @@ The A9000 survey updates the list as APs are found during each sweep. Automatic 
 - A NETGEAR A9000 bound to **WinUSB** for passive surveys and raw capture.
 - Wireshark to inspect the resulting `.pcap` files (optional for running the app).
 
-An Intel AX200 or other Windows Wi-Fi adapter can be selected as a **Windows WLAN discovery source** for the network and overlap views. Raw 802.11 capture in this release requires the A9000. This is a user-space USB application using WinUSB, not an installable replacement kernel Wi-Fi driver. Binding the A9000 to WinUSB means Windows will no longer use that adapter for ordinary Wi-Fi connections until its normal driver is restored.
+Other Windows Wi-Fi adapter can be selected as a **Windows WLAN discovery source** for the network and overlap views. Raw 802.11 capture in this release requires the A9000. This is a user-space USB application using WinUSB, not an installable replacement kernel Wi-Fi driver. Binding the A9000 to WinUSB means Windows will no longer use that adapter for ordinary Wi-Fi connections until its normal driver is restored.
 
 ### A9000 driver binding
 
