@@ -103,3 +103,5 @@ The A9000 capture path has been exercised on a Windows A9000 with a real phone c
 The `vendor/wifit3/` directory contains a trimmed receive-side port from [derv82/wifit3 v0.3.3](https://github.com/derv82/wifit3/tree/v0.3.3), commit `75714287b8085f16fb28f225da0ccc8d85b5529f`. The bundled MediaTek firmware has its own terms in [`vendor/wifit3/chips/mt7925au/assets/LICENCE.mediatek`](vendor/wifit3/chips/mt7925au/assets/LICENCE.mediatek).
 
 The Python application is distributed under **GPL-2.0-only**; see [`LICENSE`](LICENSE). Keep the license, upstream notices, and firmware license with the project when publishing it.
+
+Development included substantial assistance from OpenAI Codex and hands-on A9000 testing by the project maintainer. See [`AI_DISCLOSURE.md`](AI_DISCLOSURE.md) for the development disclosure.
