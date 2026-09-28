@@ -6,7 +6,7 @@
 
 Current version: **0.3.3**.
 
-**Recommended: download the Windows `.exe` from this repository’s Releases section.** No Python installation or source-code setup is needed to use the executable.
+**Recommended: download the Windows `.exe` from this repository’s [Releases](https://github.com/Xelabgon/A9000-Capture-Tool/releases/tag/v0.3.3) section.** No Python installation or source-code setup is needed to use the executable.
 
 A Windows desktop app for surveying nearby Wi-Fi radios, visualizing their advertised channel overlap, and saving **passive 802.11 captures** as Wireshark-readable PCAP files. The raw capture backend is built for the **NETGEAR A9000** (`USB\VID_0846&PID_9072`, MediaTek MT7925AU) with a WinUSB binding.
 
