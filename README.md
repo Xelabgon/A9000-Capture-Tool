@@ -1,5 +1,7 @@
 # A9000 Capture Tool
 
+Current version: **0.3.3**.
+
 A Windows desktop app for surveying nearby Wi-Fi radios, visualizing their advertised channel overlap, and saving **passive 802.11 captures** as Wireshark-readable PCAP files. The raw capture backend is built for the **NETGEAR A9000** (`USB\VID_0846&PID_9072`, MediaTek MT7925AU) with a WinUSB binding.
 
 The app listens on a selected channel. It can record the authentication, association, and EAPOL frames exchanged when a device connects, along with the other frames received on that channel. It has no Wi-Fi frame injection controls.
@@ -41,12 +43,26 @@ py -3 -m venv .venv
 
 The commands use the environment's Python directly, so PowerShell activation is unnecessary. Keep `vendor/wifit3/` and its firmware assets beside the application files when copying the project. The app loads the firmware included in that directory when needed.
 
+## Menus and output files
+
+- **File**: select or open the output folder, reset it to Downloads, export the network list as JSON/CSV, or exit.
+- **View**: switch between Networks, Channel overlaps, and Capture; clear the network filter.
+- **Help**: quick guide and About, including app and runtime version information.
+
+New captures and JSON/CSV export dialogs default to the current user's Downloads folder (including a redirected Windows Downloads location). A folder chosen in the File menu is remembered between launches using per-user settings, outside the application directory. The current folder is shown in the status bar; hover over it for the full path. A relative PCAP filename is resolved inside this folder.
+
+The Capture **Browse…** button overrides the destination for that recording only. Changing the default folder during a recording affects future files; it does not move the active capture. Capture parameters remain in the Capture tab. Network exports include the entire discovered list, even when the table has a text filter.
+
+Shortcuts: **Ctrl+1/2/3** switches views, **Ctrl+L** clears the network filter, **Ctrl+Shift+O** opens the output folder, **Ctrl+Q** exits, and **F1** opens the quick guide.
+
+For source releases, the version is maintained in `APP_VERSION` in `app.py` and displayed under **Help → About**.
+
 ## Capture a device connecting
 
 1. Select **A9000 · passive USB monitor** under **Discovery source**. Wait for your AP to appear in **Networks**. Selecting its row fills the capture channel and AP selection.
 2. Open **Capture** and confirm the AP's **primary channel**. The A9000 stays on this one channel for the entire recording.
 3. Choose **All frames** for a full channel recording. To save just management and EAPOL frames, choose **Connection frames**. Leave **AP filter** and **Client filter** off for the most complete recording; they filter packets *when saving*, after reception.
-4. Choose an output path ending in `.pcap`. The default duration is **90 seconds**; `0` records until you press **Stop and save PCAP**. The app will not overwrite an existing file.
+4. Choose an output path ending in `.pcap` (defaults to your Windows Downloads folder, or the folder chosen under **File → Select output folder**). The default duration is **90 seconds**; `0` records until you press **Stop and save PCAP**. The app will not overwrite an existing file.
 5. Press **Start passive capture**, then connect or reconnect your test device normally. Stop the capture if needed and open the PCAP in Wireshark.
 
 Useful Wireshark display filters:
